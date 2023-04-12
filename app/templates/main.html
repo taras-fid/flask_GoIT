@@ -4,11 +4,11 @@
     {% if title %}
         <h1 style="color: blue">{{title}}</h1>
     {% else %}
-        <h1>Main</h1>
+        <h1>Головна сторінка</h1>
     {% endif %}
     <h1>{{current_user.username}}</h1>
     {% for post in posts %}
-        <p>{{post['author']['username']}} - {{post.author.age}}</p>
+        <p>{{post.name}} - {{post.text}}</p>
         <h3>{{post.body}}</h3>
     {% endfor %}
 {% endblock %}
