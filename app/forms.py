@@ -19,6 +19,7 @@ class SignUpForm(FlaskForm):
 
 
 class EditProfileForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Username')
     about_me = TextAreaField('About me', validators=[Length(min=0, max=128)])
+    telegram_id = StringField('Telegram ID')
     submit = SubmitField('Save')

@@ -10,7 +10,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True)
     email = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    # about_me = db.Column(db.String(128))
+    telegram_id = db.Column(db.Integer)
 
     def __repr__(self):
         return f'<User {self.username}>'

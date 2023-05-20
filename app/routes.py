@@ -70,12 +70,9 @@ def logout():
 def edit_profile():
     form = EditProfileForm()
     if form.validate_on_submit():
-        current_user.username = form.username.data
-        # current_user.about_me = form.about_me.data
+        user = User.query.filter_by(username=current_user.username).first()
+        user.telegram_id = form.telegram_id.data
         db.session.commit()
         flash('Your changes have been saved.')
         return redirect(url_for('edit_profile'))
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-        # form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit profile', form=form)
