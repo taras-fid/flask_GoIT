@@ -1,3 +1,5 @@
 from . import help
 from . import start
-from . import inline_buttons
+from . import balance_handlers
+from . import login
+from . import register

@@ -1,6 +1,6 @@
 from aiogram import types
 from loader import dp
-from .inline_buttons import kb
+from .login_register_keyboard import kb
 
 
 @dp.message_handler(commands=['start'])
