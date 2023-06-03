@@ -17,7 +17,7 @@ class LoginStatesGroup(StatesGroup):
 
 @dp.callback_query_handler(text='login_callback')
 async def register_callback_function(call: types.CallbackQuery):
-    await call.answer('Let check is it you! Enter ur login pls <3')
+    await call.answer('Let check is it you! Enter ur email pls <3')
     await LoginStatesGroup.email.set()
 
 
@@ -34,7 +34,8 @@ async def username_state_function(message: types.Message, state: FSMContext):
             await message.answer('Now pls enter ur password\nDon`t worry nobody will see it :-)')
             await LoginStatesGroup.next()
         else:
-            await message.answer('there is no user with this email, try again')
+            kb['inline_keyboard'].next().pop()
+            await message.answer(f'there is no user with this email, try again or register', reply_markup=kb)
     else:
         await message.answer('email must be like "example@email.com"')
 
