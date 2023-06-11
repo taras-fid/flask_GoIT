@@ -130,3 +130,6 @@ dmypy.json
 .idea
 config.py
 migrations/
+
+bot/data/config.py
+bot/utils/database_connector.py
