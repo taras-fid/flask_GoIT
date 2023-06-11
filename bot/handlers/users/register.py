@@ -67,5 +67,7 @@ async def repeat_password_state_function(message: types.Message, state: FSMConte
             connection_database.commit()
             await message.answer('Well done! Registration passed successfully.')
             await state.reset_state()
+            msg = await message.answer(text="/user_info")
+            await msg.delete()
         else:
             await message.answer('password must be the same')

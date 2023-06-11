@@ -11,3 +11,4 @@ Werkzeug==2.3.4
 WTForms==3.0.1
 mysqlclient==2.1.1
 email-validator==2.0.0.post2
+mysql-connector==2.2.9

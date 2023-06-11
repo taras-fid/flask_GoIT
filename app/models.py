@@ -11,6 +11,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     telegram_id = db.Column(db.Integer)
+    age = db.Column(db.Integer)
+    gender = db.Column(db.String(64), index=True)
 
     def __repr__(self):
         return f'<User {self.username}>'
