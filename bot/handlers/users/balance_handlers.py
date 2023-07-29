@@ -1,5 +1,5 @@
 from aiogram import types
-from loader import dp, bot
+from bot.loader import dp, bot
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.dispatcher import FSMContext
 
