@@ -1,8 +1,8 @@
 from aiogram import types
-from loader import dp, bot
+from bot.loader import dp, bot
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.dispatcher import FSMContext
-from utils.database_connector import cursor, connection_database
+from bot.utils.database_connector import cursor, connection_database
 from .user_info_keyboard import dynamic_kb, states_kb
 
 

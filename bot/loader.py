@@ -1,5 +1,5 @@
 from aiogram import Bot, Dispatcher
-from data import config
+from bot.data import config
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 

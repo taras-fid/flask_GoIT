@@ -1,5 +1,5 @@
 from aiogram import types
-from loader import dp
+from bot.loader import dp
 from .login_register_keyboard import kb
 
 

@@ -1,9 +1,9 @@
 from aiogram import types
-from loader import dp, bot
+from bot.loader import dp, bot
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.dispatcher import FSMContext
 import re
-from utils.database_connector import cursor, connection_database
+from bot.utils.database_connector import cursor, connection_database
 from werkzeug.security import check_password_hash
 from .register import regex_email
 from .login_register_keyboard import kb
