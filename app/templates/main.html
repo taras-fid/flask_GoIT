@@ -6,9 +6,11 @@
     {% else %}
         <h1>Головна сторінка</h1>
     {% endif %}
-    <h1>{{current_user.username}}</h1>
-    {% for post in posts %}
-        <p>{{post.name}} - {{post.text}}</p>
-        <h3>{{post.body}}</h3>
-    {% endfor %}
+        <h1>{{current_user.username}}</h1>
+    {% if url %}
+        ви можете отримати вакансії в нашому боті:
+        <br> або по посиланню на <a href={{url}}>сайт</a>
+    {% else %}
+        <p> go to </p>
+    {% endif %}
 {% endblock %}

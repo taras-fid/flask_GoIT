@@ -1,23 +1,17 @@
 from flask_login import login_required, current_user, logout_user, login_user
 from app import app, db
-from app.forms import SignInForm, SignUpForm, EditProfileForm
+from app.forms import SignInForm, SignUpForm, EditProfileForm, WorkForm
 from flask import flash, redirect, url_for, render_template, request
 from app.models import User
+import requests
 
 
 @app.route('/')
 def index():
-    posts = [
-        {
-            'author': {'username': 'author1', 'age': '25'},
-            'body': ' body1 body1 body1 body1 body1'
-        },
-        {
-            'author': {'username': 'author2', 'age': '35'},
-            'body': ' body2 body2 body2 body2 body2'
-        },
-    ]
-    return render_template('main.html', title='Main page', posts=posts)
+    if request.args.get('url'):
+        return render_template('main.html', title='Main page', url=request.args['url'])
+    else:
+        return render_template('main.html', title='Main page', url='')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -76,3 +70,17 @@ def edit_profile():
         flash('Your changes have been saved.')
         return redirect(url_for('edit_profile'))
     return render_template('edit_profile.html', title='Edit profile', form=form)
+
+
+@app.route('/work-form', methods=['GET', 'POST'])
+@login_required
+def work_form():
+    form = WorkForm()
+    if form.validate_on_submit():
+        flash(f'Your changes have been saved.')
+        url = f'https://robota.ua/zapros/{form.position.data}/{"ukraine" if "no_choice" == form.city.data else form.city.data}?experienceType={str(form.no_experience.data).lower()}'
+        #  TODO: parse url and send to bot
+        result = 'test'
+        requests.get(f'https://api.telegram.org/bot5803031167:AAGyRzVMJUWTvUl8PLEqC4CiR3pK1duXxH4/sendMessage?chat_id=623695791&text={result}')
+        return redirect(url_for('index', url=url))
+    return render_template('work_form.html', title='Work form', form=form)
