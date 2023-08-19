@@ -47,6 +47,7 @@ async def password_state_function(message: types.Message, state: FSMContext):
             if check_password_hash(data['password'], message.text):
                 await message.answer('login passed!')
                 await state.reset_state()
+                await LoginStatesGroup.email.set()
             else:
                 await message.answer('wrong password.')
                 data['false_password_counter'] += 1

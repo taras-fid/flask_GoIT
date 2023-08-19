@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if title %}
+        <h1 style="color: blue">Ваші замовлення</h1>
+    {% endif %}
+    {% for order in orders %}
+        <p>{{order.id}} - {{order.post.text}} - <a href="/uploads/bill_{{order.id}}">bill</a></p>
+    {% endfor %}
+{% endblock %}

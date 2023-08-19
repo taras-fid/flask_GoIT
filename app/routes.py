@@ -1,23 +1,22 @@
 from flask_login import login_required, current_user, logout_user, login_user
 from app import app, db
 from app.forms import SignInForm, SignUpForm, EditProfileForm
-from flask import flash, redirect, url_for, render_template, request
-from app.models import User
+from flask import flash, redirect, url_for, render_template, request, current_app, send_from_directory
+from app.models import User, Post, Order
+import os
 
 
 @app.route('/')
 def index():
-    posts = [
-        {
-            'author': {'username': 'author1', 'age': '25'},
-            'body': ' body1 body1 body1 body1 body1'
-        },
-        {
-            'author': {'username': 'author2', 'age': '35'},
-            'body': ' body2 body2 body2 body2 body2'
-        },
-    ]
+    posts = Post.query.filter_by().all()
     return render_template('main.html', title='Main page', posts=posts)
+
+
+@app.route('/orders')
+@login_required
+def orders():
+    orders = Order.query.filter_by(user_id=current_user.id).all()
+    return render_template('orders.html', orders=orders)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -76,3 +75,9 @@ def edit_profile():
         flash('Your changes have been saved.')
         return redirect(url_for('edit_profile'))
     return render_template('edit_profile.html', title='Edit profile', form=form)
+
+
+@app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    uploads = app.config['UPLOAD_FOLDER']
+    return send_from_directory(uploads, filename)
