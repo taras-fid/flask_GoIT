@@ -1,22 +1,49 @@
 from flask_login import login_required, current_user, logout_user, login_user
 from app import app, db
-from app.forms import SignInForm, SignUpForm, EditProfileForm
-from flask import flash, redirect, url_for, render_template, request, current_app, send_from_directory
-from app.models import User, Post, Order
-import os
+from app.forms import SignInForm, SignUpForm
+from flask import flash, redirect, url_for, render_template, request
+from app.models import User, Task
+import datetime
+
+
+def delete_completed_tasks():
+    one_week_ago = datetime.datetime.utcnow() - datetime.timedelta(days=7)
+    completed_tasks = Task.query.filter(
+        Task.completed == True,
+        Task.updated_at <= one_week_ago
+    ).all()
+
+    for task in completed_tasks:
+        db.session.delete(task)
+
+    db.session.commit()
 
 
 @app.route('/')
 def index():
-    posts = Post.query.filter_by().all()
-    return render_template('main.html', title='Main page', posts=posts)
+    delete_completed_tasks()
+    tasks = Task.query.all()
+    return render_template('view_tasks.html', tasks=tasks)
 
 
-@app.route('/orders')
-@login_required
-def orders():
-    orders = Order.query.filter_by(user_id=current_user.id).all()
-    return render_template('orders.html', orders=orders)
+@app.route('/add', methods=['POST'])
+def add_task():
+    task_text = request.form.get('task')
+    if task_text:
+        new_task = Task(text=task_text)
+        db.session.add(new_task)
+        db.session.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/delete/<int:task_id>')
+def delete_task(task_id):
+    # TODO: змінити логіку видалення - не видаляти запис з бд, а змінювати статус('completed') на `True`
+    task = Task.query.get(task_id)
+    if task:
+        db.session.delete(task)
+        db.session.commit()
+    return redirect(url_for('index'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -62,22 +89,3 @@ def sign_up():
 def logout():
     logout_user()
     return redirect(url_for('index'))
-
-
-@app.route('/edit-profile', methods=['GET', 'POST'])
-@login_required
-def edit_profile():
-    form = EditProfileForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=current_user.username).first()
-        user.telegram_id = form.telegram_id.data
-        db.session.commit()
-        flash('Your changes have been saved.')
-        return redirect(url_for('edit_profile'))
-    return render_template('edit_profile.html', title='Edit profile', form=form)
-
-
-@app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
-def download(filename):
-    uploads = app.config['UPLOAD_FOLDER']
-    return send_from_directory(uploads, filename)
