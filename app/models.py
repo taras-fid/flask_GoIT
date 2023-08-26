@@ -36,6 +36,8 @@ class Post(db.Model):
     name = db.Column(db.String(16), index=True)
     text = db.Column(db.String(128))
     timestamp_created = datetime.now().timestamp()
+    img_path = db.Column(db.String(128))
+
 
 
 class Order(db.Model):
